@@ -1,2 +1,2 @@
-https://www.douyin.com/user/MS4wLjABAAAAYOqvfvuT61guAqzCot4g6VOU9K4Oz36iKZasFDVGm1x1FrIPiIwcuUOPrNU4WkX9?enter_method=video_title&author_id=4081841702966814&group_id=6982073447526436137&log_pb=%7B%22impr_id%22%3A%22021625662836333fdbddc0100fff0020a9c112c0000000bee41bb%22%7D&enter_from=video_detail
+https://www.douyin.com/user/MS4wLjABAAAAbgCnupO_NGaTAmzWnXSivCeHWrOe0wC2ZcpNvVoQfEk?extra_params=%7B%22search_id%22%3A%22202107072151000102121640354914D12F%22%2C%22search_result_id%22%3A%2258958068057%22%2C%22search_keyword%22%3A%22%E5%86%AF%E6%8F%90%E8%8E%AB%22%2C%22search_type%22%3A%22video%22%7D&enter_method=search_result&enter_from=search_result
 ##end##
