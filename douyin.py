@@ -35,7 +35,6 @@ get_HEADER = {
     # 客户端能够接收的内容类型
     'Accept-Language': 'en-US,en;q=0.5',  # 浏览器可接受的语言
     'Connection': 'keep-alive',  # 表示是否需要持久连接
-    'referer':'https://www.douyin.com/video/6980526971419725092?previous_page=app_code_link',
     'Host':'v26.douyinvod.com'
 
 }
