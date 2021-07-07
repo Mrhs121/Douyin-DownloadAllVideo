@@ -5,7 +5,7 @@ import requests
 from bs4 import BeautifulSoup
 import re
 import os
-from mv.ThreadPool import ThreadPool
+from ThreadPool import ThreadPool
 from functools import partial
 
 
