@@ -17,4 +17,13 @@ https://www.douyin.com/user/MS4wLjABAAAAbgCnupO_NGaTAmzWnXSivCeHWrOe0wC2ZcpNvVoQ
 
  然后直接运行 python douyin.py 即可开始下载
  
+![](https://github.com/Mrhs121/Douyin-DownloadAllVideo/blob/main/ftm_f.png)
+![](https://github.com/Mrhs121/Douyin-DownloadAllVideo/blob/main/ftm_video.png)
+ 
+ # 原理
+ 
+ 1. 抖音web版的html是由js生成，如果直接用requests获取html是没法获取到有效数据的，故而用selenium模拟浏览器获取html，然后再用BeautifulSoup解析url
+ 2. 抖音web版的数据是通过下滑鼠标刷新得到的，所以只用webdriver获取一次的话只能拿到前面十几条视频，所以此处用 `js="var q=document.documentElement.scrollTop=100000"`模拟鼠标下滑，循环多次直到url的数量不再发生变化即视为已经获取到了所有视频播放页面的url
+ 3. 拿到播放页面的url之后，通过正则 `v26.douyinvod.com(.+?)%2F%3F` html拿到最终的视频链接（此处用selenium也可以实现）
+ 
  
