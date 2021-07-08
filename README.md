@@ -1,10 +1,18 @@
 # Douyin-DownloadAllVideo
 Easily download all the videos from TikTok.下载指定的抖音号的所有视频，爬虫
 
+# 特别声明
+本项目仅供学习使用，不用做任何其他商业途径
+
 # Requirement
   * python
   * selenium
   * BeautifulSoup
+
+# 功能
+  * 爬取指定用户的所有视频
+  * 爬取包含指定搜索关键词的前1k个热门视频
+  * 爬取包含指定搜索关键词的前1k个热门用户
 
 # 用法
 
