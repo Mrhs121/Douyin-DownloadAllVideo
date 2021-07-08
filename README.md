@@ -9,7 +9,7 @@ Easily download all the videos from TikTok.下载指定的抖音号的所有视�
   * selenium
   * BeautifulSoup
 
-#v2新增功能
+## v2.0新增功能
 * 通过手机app分享链接直接爬取单个视频或者全部视频
 * 新增web端，一键爬爬爬爬
 
