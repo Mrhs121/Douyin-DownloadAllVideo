@@ -48,7 +48,9 @@ https://www.douyin.com/user/MS4wLjABAAAAbgCnupO_NGaTAmzWnXSivCeHWrOe0wC2ZcpNvVoQ
  
  
  ## web版爬虫
- `python http_server.py`
+ * `python http_server.py`
+ * 爬虫首页: ip:8888 
+ * 监控页面: ip:8888/q
  
  # 原理
  
