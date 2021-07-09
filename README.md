@@ -24,8 +24,8 @@ Easily download all the videos from TikTok.下载指定的抖音号的所有视�
   * 爬取包含指定搜索关键词的前1k个热门视频
   * 爬取包含指定搜索关键词的前1k个热门用户
 
-# 用法
-
+# 爬虫单独用法
+## 爬取指定up
 打开 `https://www.douyin.com` ，搜索你需要下载的up主，将up主主页链接粘贴至`douyin_url.txt`文件中，可以同时下载多个up，每个up的链接独占一行，
 文件最后一行用`##end##`结尾
 
@@ -37,6 +37,13 @@ https://www.douyin.com/user/MS4wLjABAAAAbgCnupO_NGaTAmzWnXSivCeHWrOe0wC2ZcpNvVoQ
  
 ![](https://github.com/Mrhs121/Douyin-DownloadAllVideo/blob/main/ftm_f.png)
 ![](https://github.com/Mrhs121/Douyin-DownloadAllVideo/blob/main/ftm_video.png)
+ 
+ ## 爬取指定关键词
+ 直接修改`_down_by_keyword`函数中间的`key_word`变量即可
+ 
+ 
+ ## web版爬虫
+ `python http_server.py`
  
  # 原理
  
