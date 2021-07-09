@@ -21,7 +21,6 @@ for key in pending:
 
 @app.route('/')
 def index():
-    # down_up_by_appshare('https://v.douyin.com/egb6K4n/')
     print("index")
     return render_template('index.html')
 
