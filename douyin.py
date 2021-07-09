@@ -5,10 +5,15 @@ import requests
 from bs4 import BeautifulSoup
 import re
 import os
-from mv.ThreadPool import ThreadPool
+from ThreadPool import ThreadPool
 from functools import partial
 from tqdm import tqdm
 from selenium import webdriver
+import redis
+redis_pool = redis.ConnectionPool(host='0.0.0.0',port=6379, decode_responses=True)
+#pool = redis.ConnectionPool(host=conf.REDIS_IP, port=6379, decode_responses=True)
+redis_client = redis.Redis(connection_pool=redis_pool)
+name_url = {}
 
 user_agent = [
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36",
@@ -32,12 +37,11 @@ user_agent = [
 ]
 
 get_HEADER = {
-    'User-Agent': user_agent[0],  # 浏览器头部
+    'User-Agent': user_agent[2],  # 浏览器头部
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
     # 客户端能够接收的内容类型
     'Accept-Language': 'en-US,en;q=0.5',  # 浏览器可接受的语言
     'Connection': 'keep-alive',  # 表示是否需要持久连接
-    'referer': 'https://www.douyin.com/video/6980526971419725092?previous_page=app_code_link',
     'Host': 'v26.douyinvod.com'
 
 }
@@ -52,26 +56,29 @@ down_HEADER = {
 
 }
 
-
-
 option = webdriver.ChromeOptions()
 option.add_argument('--headless')
 driver = webdriver.Chrome(options=option)
 
-pool = ThreadPool(max_workers=4)
+pool = ThreadPool(max_workers=8)
 pool.start()
-c = 'ttwid=1%7CLab6rIp6rI50hyjHppm7A_s1AY2DhpFNVWZPFOEnL9U%7C1625587169%7Cb064cbb69b13e0d48130e92f60104f1c39121537d9bb8ab496d7ec7746324c85; MONITOR_WEB_ID=86f518e8-2b14-4bfe-a17d-a363408ae7ea; s_v_web_id=verify_kqs8mx7c_UsY1l6c3_68Qq_4Gcc_8bte_5O95OiXNAUli; passport_csrf_token_default=b4f26304cff4a8c02f2bf691ed31b94d; passport_csrf_token=b4f26304cff4a8c02f2bf691ed31b94d; n_mh=3TAsyBQ9TIOReANIuNLrZaSwE0wXPy61SN4Ofti2r3g; sso_uid_tt=12dc0ae1f5143f6953a15b64234b33d8; sso_uid_tt_ss=12dc0ae1f5143f6953a15b64234b33d8; toutiao_sso_user=4273e1021bda992fcc8a8d656c2ee3a7; toutiao_sso_user_ss=4273e1021bda992fcc8a8d656c2ee3a7; odin_tt=7502bf01876c63fe2cec24eb194bb66cee9f9f091d2d9bd7cc7c0002500a89d8cde6ce2bd10557fcc224da126910d8c6; passport_auth_status_ss=bd6d57b65a6c31d468534cee3806aeff%2C; sid_guard=60557fd519c063f31d7f30967717a876%7C1625587252%7C5183998%7CSat%2C+04-Sep-2021+16%3A00%3A50+GMT; uid_tt=cbdb9df0e89134e7b90a8546c0f6a629; uid_tt_ss=cbdb9df0e89134e7b90a8546c0f6a629; sid_tt=60557fd519c063f31d7f30967717a876; sessionid=60557fd519c063f31d7f30967717a876; sessionid_ss=60557fd519c063f31d7f30967717a876; passport_auth_status=bd6d57b65a6c31d468534cee3806aeff%2C; csrf_session_id=e9d0f336d4444490baf556a38fd80165'
-cookie = {i.split("=")[0]: i.split("=")[1] for i in c.split(";")}
+
+print("初始化爬虫")
 
 
-def download(url, dirname, file_name='a.mp4'):
+def up_is_exist(name):
+    folder = os.path.exists("./douyin/" + name)
+    if not folder:
+        return  False
+    return True
+def download(url, dirname, file_name='a.mp4', prefix='./'):
     r = requests.get(url, down_HEADER)
     if r.status_code == 200:
-        folder = os.path.exists("/Volumes/t2-ssd/douyin/" + dirname)
+        folder = os.path.exists(prefix + "douyin/" + dirname)
         if not folder:
-            os.makedirs("/Volumes/t2-ssd/douyin/" + dirname)
+            os.makedirs(prefix + "douyin/" + dirname)
         # print("下载 "+ url)
-        with open("/Volumes/t2-ssd/douyin/" + dirname + '/' + file_name, "wb") as code:
+        with open(prefix + "douyin/" + dirname + '/' + file_name, "wb") as code:
             code.write(r.content)
         #         code = '200'
         return "200"
@@ -93,38 +100,76 @@ def getHTMLText(url):
 def down_one_video(url, name, index):
     try:
         html, code = getHTMLText(url)
+        # html = driver.get(url)
         soup = BeautifulSoup(html, 'html.parser')
+        # video = soup.find(name='video',attrs={'class':'mtz-vlc-klfbf'})
         title = soup.find(name='title').text
         # print(html)
         import re
         base_url = 'https://v26.douyinvod.com{}'
-        res = re.findall(r"v26.douyinvod.com(.+?)%2F%3F", html)[0]
+        base_url = 'https://v3-web.douyinvod.com{}'
+        prefix = 'v3-web.douyinvod.com'
+
+        res = re.findall(r"v3-web.douyinvod.com(.+?)%2F%3F", html)
+        if res == None:
+            print("没有检索到视频url")
+            return
+        res = res[0]
         res = str(res).replace('%2F', '/')
-        print('download ', title, base_url.format(res) + '/')
+        # print('download ', title, base_url.format(res) + '/')
         download(base_url.format(res) + '/', name, file_name='{}.mp4'.format(title))
     except Exception as e:
-        # print('ERROR',e)
+        print('ERROR',e,url)
         pass
 
+def down_up_by_appshare(url):
+    print('开始下载 ',url)
+    try:
+        html, code = getHTMLText(url)
+        # html = driver.get(url)
+        soup = BeautifulSoup(html, 'html.parser')
+        title = soup.find(name='title').text
+        # print(html)
+        import re
+        base_url = 'https://v3-web.douyinvod.com{}'
+        res = re.findall(r"v3-web.douyinvod.com(.+?)%2F%3F", html)[0]
+        up_div = soup.find(name='div',attrs={'class':'_976c31c5a089c1b1b6d8809f82aa9a7a-scss'})
+        up_url = up_div.find(name='a')
+        print('up 主页url: ',up_url['href'])
+        res = str(res).replace('%2F', '/')
+        print('download ', title, base_url.format(res) + '/')
+        down_one_user(up_url['href'],url)
+        # download(base_url.format(res) + '/', name, file_name='{}.mp4'.format(title))
+    except Exception as e:
+        print('ERROR',e)
+        pass
 
 def down(lis, name):
+    # redis_client.hset('fi', name, " [{}/{}]".format(index, len(lis)))
     for index, li in enumerate(tqdm(lis, desc=name)):
         try:
             a = li.find(name='a')['href']
             # print('download',a)
             down_one_video(a, name, index)
+            redis_client.hset('in',name , str(round((index+1)/len(lis),2)*100)+'%'+" [{}/{}]".format(index,len(lis)))
         except Exception as e:
-            # print('ERROR',e)
+            print('ERROR',e)
             pass
+    redis_client.hset('fi', name, " [{}/{}]".format(index,len(lis)))
+    redis_client.hdel('in', name)
+    redis_client.hdel('pending',name_url[name])
 
-
-def down_oneuser(url):
+def down_one_user(url,shared_url=''):
+    global name_url
+    option.add_argument('--headless')
+    driver = webdriver.Chrome(options=option)
+    # driver = webdriver.Chrome()
+    # global driver
     print(url)
     if '##end##' in url:
         print('-' * 20, ' download finished ', '-' * 20)
         driver.quit()
         import sys
-        sys.exit(0)
 
     import time
     count = 0
@@ -133,6 +178,7 @@ def down_oneuser(url):
     driver.get(url)
     name = ''
     _lis = None
+    _up_is_exist = False
     while True:
         html = driver.page_source
         soup = BeautifulSoup(html, 'html.parser')
@@ -141,6 +187,10 @@ def down_oneuser(url):
         import string, random
         ba = ''.join(random.sample(string.ascii_letters + string.digits, 8))
         name = title.text.split('的个人主页')[0]
+        name_url[str(name)] = str(shared_url)
+        if up_is_exist(name):
+            _up_is_exist = True
+            break;
         if count == 0:
             print(name)
         count += 1
@@ -150,11 +200,11 @@ def down_oneuser(url):
         for li in lis:
             a = li.find(name='a')
             # print(a['href'])
-        print('-' * 30, ' len:', len(lis))
+        print('=' * 15, '>',name, ' len:', len(lis))
         if len(lis) == num_of_video:
             times += 1
         if len(lis) == num_of_video and times > 2:
-            print("所有视频检索完毕", name, len(lis))
+            # print("所有视频检索完毕", name, len(lis))
             # down(lis,name)
             break
         num_of_video = len(lis)
@@ -165,14 +215,20 @@ def down_oneuser(url):
             driver.execute_script(js)
             time.sleep(1)
         time.sleep(1)
-    print("所有视频检索完毕", name, len(lis))
-    pool.submit(partial(down, lis, name))
+    if _up_is_exist:
+        print(name,' 已存在')
+    else:
+        print("所有视频检索完毕", name, len(lis))
+        pool.submit(partial(down, lis, name))
     # down(lis, name)
-
+    driver.quit()
 
 def down_list():
-    for url in open("douyin_user.txt"):
-        down_oneuser(url)
+    global driver
+    option.add_argument('--headless')
+    driver = webdriver.Chrome(options=option)
+    for url in open("douyin_urls.txt"):
+        down_one_user(url)
 
 
 def down_by_search(key_word, filename):
@@ -192,14 +248,14 @@ import time
 
 def down_by_keyword(key_word, filename):
     global driver
-    # driver = webdriver.Chrome()
+    driver = webdriver.Chrome()
     # a3cc5072a10a34f3d46c4e722ef788c1 - scss
     base = 'https://www.douyin.com/search/{}?publish_time=0&sort_type=1&source=normal_search&type=video'
     # base = 'https://www.douyin.com/search/%E5%A4%A7%E9%95%BF%E8%85%BF?publish_time=0&sort_type=0&source=normal_search&type=video'
     driver.get(base.format(key_word))
     js = "var q=document.documentElement.scrollTop=100000"
     time.sleep(20)
-    for i in range(0, 100):
+    for i in range(0, 2):
         driver.execute_script(js)
         time.sleep(0.5)
     html = driver.page_source
@@ -222,18 +278,20 @@ def down_by_keyword(key_word, filename):
     with open(filename, 'a+') as f:
         for user in users_url:
             f.write(str(user) + '\n')  # 加\n换行显示
-    # driver.quit()
+    driver.quit()
 
 
 def _down_by_keyword():
-    for key_word in ['海贼王','路飞','火影']:
+    for key_word in ['海贼王']:
         url_file_name = key_word + '.txt'
         down_by_keyword(key_word, url_file_name)
         # down_list()
         down_by_search(key_word, url_file_name)
-
-
-_down_by_keyword()
+    driver.quit()
+# down_up_by_appshare('https://v.douyin.com/egb6K4n/')
 # down_list()
-driver.quit()
-pool.stop()
+# down_up_by_appshare('https://v.douyin.com/egqBm4V/')
+# down_one_user('https://v.douyin.com/egb1d17/')
+
+# driver.quit()
+# pool.stop()
