@@ -47,7 +47,7 @@ https://www.douyin.com/user/MS4wLjABAAAAbgCnupO_NGaTAmzWnXSivCeHWrOe0wC2ZcpNvVoQ
  直接修改`_down_by_keyword`函数中间的`key_word`变量即可
  
  
- ## web版爬虫
+ # web版爬虫
  * `python http_server.py`
  * 爬虫首页: ip:8888 
  * 监控页面: ip:8888/q
