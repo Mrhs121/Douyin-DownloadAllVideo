@@ -16,8 +16,12 @@ Easily download all the videos from TikTok.下载指定的抖音号的所有视�
 * 新增web端，一键爬爬爬爬
 * 新增进度查询
 
-![](https://github.com/Mrhs121/Douyin-DownloadAllVideo/blob/main/s.jpeg)
-![](https://github.com/Mrhs121/Douyin-DownloadAllVideo/blob/main/q.jpeg)
+<center class="half">
+<img src="https://github.com/Mrhs121/Douyin-DownloadAllVideo/blob/main/s.jpeg" width="320"/><img src="https://github.com/Mrhs121/Douyin-DownloadAllVideo/blob/main/q.jpeg" width="320"/>
+</center>
+
+<!-- ![](https://github.com/Mrhs121/Douyin-DownloadAllVideo/blob/main/s.jpeg)
+![](https://github.com/Mrhs121/Douyin-DownloadAllVideo/blob/main/q.jpeg) -->
 
 # 功能
   * 爬取指定用户的所有视频
