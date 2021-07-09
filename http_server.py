@@ -1,12 +1,11 @@
 from flask import Flask, request, jsonify,render_template
-from  mv.douyin import *
+from douyin import *
 from concurrent.futures import ThreadPoolExecutor
 import json
 executor =ThreadPoolExecutor(8)
 app = Flask(__name__)
 import redis
 redis_pool = redis.ConnectionPool(host='127.0.0.1',port=6379, decode_responses=True)
-#pool = redis.ConnectionPool(host=conf.REDIS_IP, port=6379, decode_responses=True)
 redis_client = redis.Redis(connection_pool=redis_pool)
 
 pro = redis_client.hgetall('in')
@@ -21,7 +20,6 @@ for key in pending:
 
 @app.route('/')
 def index():
-    print("index")
     return render_template('index.html')
 
 def Find(string):
@@ -54,20 +52,20 @@ def q():
     pro = redis_client.hgetall('in')
     fi = redis_client.hgetall('fi')
     pending = redis_client.hgetall('pending')
-    res = "<br><h1>进度监控</h1><br>"
+    res = "<h1>进度监控</h1><br>"
     for key in pro:
         data = key + '    ' + pro[str(key)] + '<br>'
         res+=data
-    fi_res = "<br><br><h1>已完成</h1><br>"
+    fi_res = "<br><h1>已完成</h1><br>"
     for key in fi:
         data = key + '    ' + fi[str(key)] + '<br>'
         fi_res+=data
-    pending_res = "<br><br><h1>排队中</h1><br>"
+    pending_res = "<br><h1>排队中</h1><br>"
     for key in pending:
         data = key + '    ' + pending[str(key)] + '<br>'
         pending_res+=data
 
-    return pending_res+res+fi_res
+    return '<meta http-equiv="refresh" content="2"> '+pending_res+res+fi_res
     #返回JSON数据。
 
 if __name__ == '__main__':

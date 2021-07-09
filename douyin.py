@@ -1,4 +1,5 @@
 
+
 import requests
 from bs4 import BeautifulSoup
 import re
@@ -8,8 +9,9 @@ from functools import partial
 from tqdm import tqdm
 from selenium import webdriver
 import redis
-redis_pool = redis.ConnectionPool(host='0.0.0.0',port=6379, decode_responses=True)
-#pool = redis.ConnectionPool(host=conf.REDIS_IP, port=6379, decode_responses=True)
+
+redis_pool = redis.ConnectionPool(host='0.0.0.0', port=6379, decode_responses=True)
+# pool = redis.ConnectionPool(host=conf.REDIS_IP, port=6379, decode_responses=True)
 redis_client = redis.Redis(connection_pool=redis_pool)
 name_url = {}
 
@@ -60,23 +62,28 @@ driver = webdriver.Chrome(options=option)
 
 pool = ThreadPool(max_workers=8)
 pool.start()
-
+#cookie = {i.split("=")[0]: i.split("=")[1] for i in c.split(";")}
 print("初始化爬虫")
+
+save_path_prefix = '../DouyinDown'
 
 
 def up_is_exist(name):
-    folder = os.path.exists("./douyin/" + name)
+    folder = os.path.exists(os.path.join(save_path_prefix, name))
     if not folder:
-        return  False
+        return False
     return True
-def download(url, dirname, file_name='a.mp4', prefix='./'):
+
+
+def download(url, dirname, file_name='a.mp4', prefix=save_path_prefix):
     r = requests.get(url, down_HEADER)
     if r.status_code == 200:
-        folder = os.path.exists(prefix + "douyin/" + dirname)
+        path = os.path.join('', prefix, dirname)
+        folder = os.path.exists(path)
         if not folder:
-            os.makedirs(prefix + "douyin/" + dirname)
+            os.makedirs(path)
         # print("下载 "+ url)
-        with open(prefix + "douyin/" + dirname + '/' + file_name, "wb") as code:
+        with open(os.path.join('', prefix, dirname, file_name), "wb") as code:
             code.write(r.content)
         #         code = '200'
         return "200"
@@ -117,11 +124,12 @@ def down_one_video(url, name, index):
         # print('download ', title, base_url.format(res) + '/')
         download(base_url.format(res) + '/', name, file_name='{}.mp4'.format(title))
     except Exception as e:
-        print('ERROR',e,url)
+        print('ERROR', e, url)
         pass
 
+
 def down_up_by_appshare(url):
-    print('开始下载 ',url)
+    print('开始下载 ', url)
     try:
         html, code = getHTMLText(url)
         # html = driver.get(url)
@@ -131,33 +139,37 @@ def down_up_by_appshare(url):
         import re
         base_url = 'https://v3-web.douyinvod.com{}'
         res = re.findall(r"v3-web.douyinvod.com(.+?)%2F%3F", html)[0]
-        up_div = soup.find(name='div',attrs={'class':'_976c31c5a089c1b1b6d8809f82aa9a7a-scss'})
+        up_div = soup.find(name='div', attrs={'class': '_976c31c5a089c1b1b6d8809f82aa9a7a-scss'})
         up_url = up_div.find(name='a')
-        print('up 主页url: ',up_url['href'])
+        print('up 主页url: ', up_url['href'])
         res = str(res).replace('%2F', '/')
-        print('download ', title, base_url.format(res) + '/')
-        down_one_user(up_url['href'],url)
+        # print('download ', title, base_url.format(res) + '/')
+        down_one_user(up_url['href'], url)
         # download(base_url.format(res) + '/', name, file_name='{}.mp4'.format(title))
     except Exception as e:
-        print('ERROR',e)
+        print('ERROR', e)
         pass
 
+
 def down(lis, name):
+    redis_client.hdel('pending', name_url[name])
     # redis_client.hset('fi', name, " [{}/{}]".format(index, len(lis)))
     for index, li in enumerate(tqdm(lis, desc=name)):
         try:
             a = li.find(name='a')['href']
             # print('download',a)
             down_one_video(a, name, index)
-            redis_client.hset('in',name , str(round((index+1)/len(lis),2)*100)+'%'+" [{}/{}]".format(index,len(lis)))
+            redis_client.hset('in', name,
+                              str(round((index + 1) / len(lis), 2) * 100) + '%' + " [{}/{}]".format(index, len(lis)))
         except Exception as e:
-            print('ERROR',e)
+            print('ERROR', e)
             pass
-    redis_client.hset('fi', name, " [{}/{}]".format(index,len(lis)))
+    redis_client.hset('fi', name, " [{}/{}]".format(index, len(lis)))
     redis_client.hdel('in', name)
-    redis_client.hdel('pending',name_url[name])
 
-def down_one_user(url,shared_url=''):
+
+
+def down_one_user(url, shared_url=''):
     global name_url
     option.add_argument('--headless')
     driver = webdriver.Chrome(options=option)
@@ -198,7 +210,7 @@ def down_one_user(url,shared_url=''):
         for li in lis:
             a = li.find(name='a')
             # print(a['href'])
-        print('=' * 15, '>',name, ' len:', len(lis))
+        print('=' * 15, '>', name, ' len:', len(lis))
         if len(lis) == num_of_video:
             times += 1
         if len(lis) == num_of_video and times > 2:
@@ -214,12 +226,15 @@ def down_one_user(url,shared_url=''):
             time.sleep(1)
         time.sleep(1)
     if _up_is_exist:
-        print(name,' 已存在')
+        print(name, ' 已存在')
+        redis_client.hdel('pending', name_url[name])
+        redis_client.hset('fi', name, '已存在')
     else:
         print("所有视频检索完毕", name, len(lis))
         pool.submit(partial(down, lis, name))
     # down(lis, name)
     driver.quit()
+
 
 def down_list():
     global driver
@@ -287,6 +302,7 @@ def _down_by_keyword():
         down_by_search(key_word, url_file_name)
     driver.quit()
 
-
 # driver.quit()
 # pool.stop()
+
+
