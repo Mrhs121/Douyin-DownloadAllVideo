@@ -65,7 +65,7 @@ pool.start()
 #cookie = {i.split("=")[0]: i.split("=")[1] for i in c.split(";")}
 print("初始化爬虫")
 
-save_path_prefix = '../DouyinDown'
+save_path_prefix = '../douyin_videos'
 
 
 def up_is_exist(name):
