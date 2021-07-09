@@ -8,13 +8,15 @@ Easily download all the videos from TikTok.下载指定的抖音号的所有视�
   * python
   * selenium
   * BeautifulSoup
+  * redis
 
 ## v2.0新增功能
 * 通过手机app分享链接直接爬取单个视频或者全部视频
 * 新增web端，一键爬爬爬爬
+* 新增进度查询
 
-![](https://github.com/Mrhs121/Douyin-DownloadAllVideo/blob/main/app.png)
-
+![](https://github.com/Mrhs121/Douyin-DownloadAllVideo/blob/main/s.jpeg)
+![](https://github.com/Mrhs121/Douyin-DownloadAllVideo/blob/main/q.jpeg)
 
 # 功能
   * 爬取指定用户的所有视频
