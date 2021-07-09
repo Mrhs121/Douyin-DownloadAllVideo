@@ -154,7 +154,7 @@ def down_up_by_appshare(url):
 def down(lis, name):
     redis_client.hdel('pending', name_url[name])
     # redis_client.hset('fi', name, " [{}/{}]".format(index, len(lis)))
-    for index, li in enumerate(tqdm(lis, desc=name)):
+    for index, li in enumerate(tqdm(lis, desc=name,ncols=100)):
         try:
             a = li.find(name='a')['href']
             # print('download',a)
