@@ -29,7 +29,7 @@ Easily download all the videos from TikTok.下载指定的抖音号的所有视�
   * 爬取包含指定搜索关键词的前1k个热门视频
   * 爬取包含指定搜索关键词的前1k个热门用户
 
-# 爬虫单独用法
+# 本地爬虫用法
 ## 爬取指定up
 打开 `https://www.douyin.com` ，搜索你需要下载的up主，将up主主页链接粘贴至`douyin_url.txt`文件中，可以同时下载多个up，每个up的链接独占一行，
 文件最后一行用`##end##`结尾
