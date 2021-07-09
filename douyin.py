@@ -1,5 +1,3 @@
-# https://v26.douyinvod.com/39b6566bccad5e7f9a95678753d3c491/60e48c5b/video/tos/cn/tos-cn-ve-15/5406fbea2c884782af5dd0ee1869c097/?a=6383&br=1041&bt=1041&cd=0%7C0%7C0&ch=26&cr=0&cs=0&cv=1&dr=0&ds=6&er=&l=20210707000106010212022142112D7E72&lr=all&mime_type=video_mp4&net=0&pl=0&qs=0&rc=amt3ZDU6Zm12NjMzNGkzM0ApPGQ7OGU1OGQ5N2g1ODc1aWdqbTZmcjRfcWNgLS1kLS9zc2IuNF8wYGJhMGMxM2MuYTA6Yw%3D%3D&vl=&vr=
-
 
 import requests
 from bs4 import BeautifulSoup
@@ -288,10 +286,7 @@ def _down_by_keyword():
         # down_list()
         down_by_search(key_word, url_file_name)
     driver.quit()
-# down_up_by_appshare('https://v.douyin.com/egb6K4n/')
-# down_list()
-# down_up_by_appshare('https://v.douyin.com/egqBm4V/')
-# down_one_user('https://v.douyin.com/egb1d17/')
+
 
 # driver.quit()
 # pool.stop()
