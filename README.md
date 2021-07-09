@@ -2,7 +2,8 @@
 Easily download all the videos from TikTok.下载指定的抖音号的所有视频，爬虫
 
 # 特别声明
-本项目仅供学习使用，不用做任何其他商业途径
+# 本项目仅供学习使用，不用做任何其他商业用途！
+
 
 # Requirement
   * python
