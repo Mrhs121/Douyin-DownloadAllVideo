@@ -1,6 +1,3 @@
-# https://v26.douyinvod.com/39b6566bccad5e7f9a95678753d3c491/60e48c5b/video/tos/cn/tos-cn-ve-15/5406fbea2c884782af5dd0ee1869c097/?a=6383&br=1041&bt=1041&cd=0%7C0%7C0&ch=26&cr=0&cs=0&cv=1&dr=0&ds=6&er=&l=20210707000106010212022142112D7E72&lr=all&mime_type=video_mp4&net=0&pl=0&qs=0&rc=amt3ZDU6Zm12NjMzNGkzM0ApPGQ7OGU1OGQ5N2g1ODc1aWdqbTZmcjRfcWNgLS1kLS9zc2IuNF8wYGJhMGMxM2MuYTA6Yw%3D%3D&vl=&vr=
-
-
 import requests
 from bs4 import BeautifulSoup
 import re
@@ -66,15 +63,6 @@ import json
 
 pool = ThreadPoolExecutor(8)
 
-# pool.start()
-c = 'ttwid=1%7CLab6rIp6rI50hyjHppm7A_s1AY2DhpFNVWZPFOEnL9U%7C1625587169%7Cb064cbb69b13e0d48130e92f60104f1c39121537d9bb8ab496d7ec7746324c85; MONITOR_WEB_ID=86f518e8-2b14-4bfe-a17d-a363408ae7ea; s_v_web_id=verify_kqs8mx7c_UsY1l6c3_68Qq_4Gcc_8bte_5O95OiXNAUli; passport_csrf_token_default=b4f26304cff4a8c02f2bf691ed31b94d; passport_csrf_token=b4f26304cff4a8c02f2bf691ed31b94d; n_mh=3TAsyBQ9TIOReANIuNLrZaSwE0wXPy61SN4Ofti2r3g; sso_uid_tt=12dc0ae1f5143f6953a15b64234b33d8; sso_uid_tt_ss=12dc0ae1f5143f6953a15b64234b33d8; toutiao_sso_user=4273e1021bda992fcc8a8d656c2ee3a7; toutiao_sso_user_ss=4273e1021bda992fcc8a8d656c2ee3a7; odin_tt=7502bf01876c63fe2cec24eb194bb66cee9f9f091d2d9bd7cc7c0002500a89d8cde6ce2bd10557fcc224da126910d8c6; passport_auth_status_ss=bd6d57b65a6c31d468534cee3806aeff%2C; sid_guard=60557fd519c063f31d7f30967717a876%7C1625587252%7C5183998%7CSat%2C+04-Sep-2021+16%3A00%3A50+GMT; uid_tt=cbdb9df0e89134e7b90a8546c0f6a629; uid_tt_ss=cbdb9df0e89134e7b90a8546c0f6a629; sid_tt=60557fd519c063f31d7f30967717a876; sessionid=60557fd519c063f31d7f30967717a876; sessionid_ss=60557fd519c063f31d7f30967717a876; passport_auth_status=bd6d57b65a6c31d468534cee3806aeff%2C; csrf_session_id=e9d0f336d4444490baf556a38fd80165'
-kuaishou_c = '_did=web_252270252416EEFB; kpf=PC_WEB; kpn=KUAISHOU_VISION; clientid=3; did=web_f5605457d8649e60c33ac47b6730058d; kuaishou.server.web_st=ChZrdWFpc2hvdS5zZXJ2ZXIud2ViLnN0EqABvoKhzoY5ZmCrW6ihg0lpl8GhEXUoXVIEL0N4H8KrTP3xfVlQF2NFVBR1ExtZYpQ-HT6XznR3zRuZEXY1BbGS-Zy0ebLZ9H_fUkoAxVUh63NMEFjcJR-Nyr-d9ERTqqwACZDI0bbnHSXlRmhV-KTT_6KN1RW6T_imdaUG74Q8iLgdp0t0t4IvamUUYMdavjr1L4ccBO4r-3qyCTl9pk0prBoStVKEb-xUGkLo9u0A7O3lj4AGIiBOUP5BnzTeX8Y4d3U-PU9UceJI1SuknN5pl7OHSqxaqigFMAE; kuaishou.server.web_ph=6f7352378417cac345cf921c93278bff27c8; didv=1625938562000'
-kuaishou_c = '_did=web_252270252416EEFB; kpf=PC_WEB; kpn=KUAISHOU_VISION; clientid=3; did=web_f5605457d8649e60c33ac47b6730058d; didv=1625938562000; _bl_uid=C7k06qsRyFR3zF8vOihj82hrp5IX; ktrace-context=1|MS43NjQ1ODM2OTgyODY2OTgyLjkxNzcxNzM0LjE2MjU5NDQzMjMzNDQuNjE5NDcw|MS43NjQ1ODM2OTgyODY2OTgyLjc1MjkzMjQ4LjE2MjU5NDQzMjMzNDQuNjE5NDcx|0|graphql-server|webservice|false|NA; userId=2135609138; kuaishou.server.web_st=ChZrdWFpc2hvdS5zZXJ2ZXIud2ViLnN0EqABKWC-C-VBYuMBGOjOAJgBHoPYYSktfnvqYPJO_MtUZQegIygL8qel1nqQAhaFo0F30daqEyKS-HYANavTdFfXDa9aavGIfIKOrT9ckgvV3rckQcjZM65n0Sgr_5R52Moz1kisYu2NtyTLi28p2MlXYxBzuS7wrCLrox9Rk6KQ7OcqOBhVF6XADwz9LG6Hxz7R8uMwdu4-eJsDm7_wLMBHCxoSzFZBnBL4suA5hQVn0dPKLsMxIiBYaLg_l8wjkRBRq8_oK0xj-sakg4yYTVseRw9XGG4vyygFMAE; kuaishou.server.web_ph=c64fe76932c2f2f83423baa7effadb467c43'
-
-dy_cookies = 'ttwid=1%7CZXz68xxvoU4R5QaRJNcnvwRuch5YAscF5EzxR601AEs%7C1627628360%7C931f090779804c4b660f4fe3b1cb6df0bd1470fa1a1108d7c29c6402c789e13f; MONITOR_WEB_ID=660b6b75-0e89-48dc-bc93-846eecc287a1'
-dy_cookies = 'ttwid=1%7CZXz68xxvoU4R5QaRJNcnvwRuch5YAscF5EzxR601AEs%7C1627628360%7C931f090779804c4b660f4fe3b1cb6df0bd1470fa1a1108d7c29c6402c789e13f; MONITOR_WEB_ID=660b6b75-0e89-48dc-bc93-846eecc287a1; passport_csrf_token_default=6b0df0bccf20bb84d12d5a13444a7e4d; passport_csrf_token=6b0df0bccf20bb84d12d5a13444a7e4d; s_v_web_id=verify_krq22gb1_AiZgTTDi_sdQa_4dSP_9BXT_vOdrY3CXoDcI; n_mh=3TAsyBQ9TIOReANIuNLrZaSwE0wXPy61SN4Ofti2r3g; sso_uid_tt=08d76cd5e87300c1a152a44dd0f33709; sso_uid_tt_ss=08d76cd5e87300c1a152a44dd0f33709; toutiao_sso_user=3c3a357e34336ef5abb3e4d3f9e141e3; toutiao_sso_user_ss=3c3a357e34336ef5abb3e4d3f9e141e3; odin_tt=fe9555a871b1f2d454ab0c59132d8295d227ba95b31b11abc214e933a66b9a09acecbc283429b25294498235fcbea448; passport_auth_status_ss=89251bb56e23fe76bd94ec27fca95e03%2C; sid_guard=5a3787aa247d58f744cf3f8ae7ff3ad4%7C1627632070%7C5183999%7CTue%2C+28-Sep-2021+08%3A01%3A09+GMT; uid_tt=96ef0f175b69b8b55bb4f87d1db54267; uid_tt_ss=96ef0f175b69b8b55bb4f87d1db54267; sid_tt=5a3787aa247d58f744cf3f8ae7ff3ad4; sessionid=5a3787aa247d58f744cf3f8ae7ff3ad4; sessionid_ss=5a3787aa247d58f744cf3f8ae7ff3ad4; SID_UCP=5a3787aa247d58f744cf3f8ae7ff3ad4; SSID_UCP=5a3787aa247d58f744cf3f8ae7ff3ad4; passport_auth_status=89251bb56e23fe76bd94ec27fca95e03%2C'
-cookie = {i.split("=")[0]: i.split("=")[1] for i in kuaishou_c.split(";")}
-dy_cookies = {i.split("=")[0]: i.split("=")[1] for i in dy_cookies.split(";")}
 
 
 element_class = {"user_logo": 'CjPRy13J',"video_list": 'ECMy_Zdt'}
@@ -92,20 +80,9 @@ request_data = {
     "query": "query visionProfilePhotoList($pcursor: String, $userId: String, $page: String, $webPageArea: String) {\n  visionProfilePhotoList(pcursor: $pcursor, userId: $userId, page: $page, webPageArea: $webPageArea) {\n    result\n    llsid\n    webPageArea\n    feeds {\n      type\n      author {\n        id\n        name\n        following\n        headerUrl\n        headerUrls {\n          cdn\n          url\n          __typename\n        }\n        __typename\n      }\n      tags {\n        type\n        name\n        __typename\n      }\n      photo {\n        id\n        duration\n        caption\n        likeCount\n        realLikeCount\n        coverUrl\n        coverUrls {\n          cdn\n          url\n          __typename\n        }\n        photoUrls {\n          cdn\n          url\n          __typename\n        }\n        photoUrl\n        liked\n        timestamp\n        expTag\n        animatedCoverUrl\n        stereoType\n        videoRatio\n        __typename\n      }\n      canAddComment\n      currentPcursor\n      llsid\n      status\n      __typename\n    }\n    hostName\n    pcursor\n    __typename\n  }\n}\n"
 }
 
-kuaishou_search_request_data = {
-    "operationName":"visionSearchPhoto",
-    "variables":{
-        "keyword":"猫咪",
-        "pcursor":"",
-        "page":"search"
-    },
-    "query":"query visionSearchPhoto($keyword: String, $pcursor: String, $searchSessionId: String, $page: String, $webPageArea: String) {\n  visionSearchPhoto(keyword: $keyword, pcursor: $pcursor, searchSessionId: $searchSessionId, page: $page, webPageArea: $webPageArea) {\n    result\n    llsid\n    webPageArea\n    feeds {\n      type\n      author {\n        id\n        name\n        following\n        headerUrl\n        headerUrls {\n          cdn\n          url\n          __typename\n        }\n        __typename\n      }\n      tags {\n        type\n        name\n        __typename\n      }\n      photo {\n        id\n        duration\n        caption\n        likeCount\n        realLikeCount\n        coverUrl\n        photoUrl\n        liked\n        timestamp\n        expTag\n        coverUrls {\n          cdn\n          url\n          __typename\n        }\n        photoUrls {\n          cdn\n          url\n          __typename\n        }\n        animatedCoverUrl\n        stereoType\n        videoRatio\n        __typename\n      }\n      canAddComment\n      currentPcursor\n      llsid\n      status\n      __typename\n    }\n    searchSessionId\n    pcursor\n    aladdinBanner {\n      imgUrl\n      link\n      __typename\n    }\n    __typename\n  }\n}\n"
-}
 
 # print("初始化爬虫")
-
-save_path_prefix = '/Volumes/t2-ssd/douyin'
-save_path_prefix = '/Users/shenghuang/Downloads/douyin'
+save_path_prefix = './Downloads/douyin'
 
 
 def up_is_exist(name):
